@@ -1,11 +1,10 @@
 
 
 PSQL_SERVER_CONTAINER_NAME ?= postgres
-
-POSTGRES_PASS    ?= abc123
-POSTGRES_VERSION ?= 9.2
 POSTGRES_IMAGE   ?= postgres
+POSTGRES_VERSION ?= 9.2
 POSTGRES_USER    ?= postgres
+POSTGRES_PASS    ?= abc123
 
 POSTGRES_CONTAINER_ID=$(shell docker ps -a | grep ${PSQL_SERVER_CONTAINER_NAME} | cut -d ' ' -f 1)
 
@@ -13,7 +12,7 @@ all: default
 
 default:
 	${MAKE} psql-init
-	${MAKE} psql-provdb-init
+	${MAKE} psql-provdb
 
 
 psql-init:
@@ -26,7 +25,11 @@ psql-init:
 	fi
 
 
-psql-provdb-init: psql-init
+psql-provdb:
+	${MAKE} psql-provdb-createdb
+	${MAKE} psql-provdb-set-password
+
+psql-provdb-createdb:
 	@echo create prov user and prov db
 	@docker run -t -i \
 		--rm \
@@ -35,6 +38,8 @@ psql-provdb-init: psql-init
 		-e PGPASSWORD=${POSTGRES_PASS} \
 		${PSQL_USER_OPTS} ${POSTGRES_IMAGE}:${POSTGRES_VERSION} \
 		sh -c 'exec psql -h "$$PSQL_PORT_5432_TCP_ADDR" -p "$$PSQL_PORT_5432_TCP_PORT" -U $(POSTGRES_USER) < /usr/local/lp/git/lw/sql/provision/database.sql'
+
+psql-provdb-set-password:
 	@echo set password
 	@echo " alter user prov with password '$(POSTGRES_PASS)';" > user.sql
 	@docker run -t -i \
