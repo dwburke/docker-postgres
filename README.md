@@ -5,3 +5,16 @@
 
 3. Profit
 
+
+
+Instructions:
+
+Initial setup:
+
+To create a prov database, with a prov user:
+
+ # make
+
+
+Your password is not secure.  You have been warned.
+
