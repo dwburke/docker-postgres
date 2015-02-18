@@ -42,7 +42,7 @@ rmq-init:
 	fi
 
 
-rmq-clean:
+rmq-destroy:
 	${MAKE} rmq-destroy
 	rm -f out/rmq-*.x
 
