@@ -1,0 +1,48 @@
+
+RABBIT_IMAGE      ?= dwburke/centos-rabbitmq
+RABBIT_VERSION    ?= latest
+RABBIT_USER       ?= white-rabbit
+RABBIT_PASS       ?= abc123
+RABBIT_VHOST      ?= ProvisionDan
+RABBIT_HUB_NAME   ?= rabbitmq_hub
+RABBIT_SPOKE_NAME ?= rabbitmq_spoke
+
+RABBIT_CONTAINER_HUB_ID=$(shell docker ps -a | grep rabbitmq_hub | cut -d ' ' -f 1)
+RABBIT_CONTAINER_SPOKE_ID=$(shell docker ps -a | grep rabbitmq_spoke | cut -d ' ' -f 1)
+
+
+rmq-init:
+	@echo "Checking hub..."
+	@if [ ! "${RABBIT_CONTAINER_HUB_ID}" ]; then \
+		@echo "Starting hub..."; \
+		docker run -d \
+			-e RABBITMQ_VHOST=addict-dev \
+			-e RABBITMQ_USER=addict \
+			-e RABBITMQ_PASS=abc123 \
+			--name=${RABBIT_HUB_NAME} \
+			-p 15672:15672 \
+			-p 5672:5672 \
+			-p 25672:25672 \
+			${RABBIT_IMAGE}:${RABBIT_VERSION}; \
+		sleep 10; \
+	fi
+	@echo "Checking spoke..."
+	@if [ ! "${RABBIT_CONTAINER_SPOKE_ID}" ]; then \
+		echo "Starting spoke..."; \
+		docker run -d \
+			-e RABBITMQ_VHOST=${RABBIT_VHOST} \
+			-e RABBITMQ_USER=${RABBIT_USER} \
+			-e RABBITMQ_PASS=${RABBIT_PASS} \
+			--name=${RABBIT_SPOKE_NAME} \
+			-p 15673:15672 \
+			-p 5673:5672 \
+			-p 25673:25672 \
+			${RABBIT_IMAGE}:${RABBIT_VERSION}; \
+		sleep 10; \
+	fi
+
+
+rmq-clean:
+	${MAKE} rmq-destroy
+	rm -f out/rmq-*.x
+

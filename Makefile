@@ -8,10 +8,12 @@ POSTGRES_PASS    ?= abc123
 
 POSTGRES_CONTAINER_ID=$(shell docker ps -a | grep ${PSQL_SERVER_CONTAINER_NAME} | cut -d ' ' -f 1)
 
+
 all: default
 
 default:
 	${MAKE} psql-init
+	${MAKE} rmq-init
 	${MAKE} psql-provdb
 
 
@@ -34,7 +36,8 @@ psql-clean:
 
 clean:
 	${MAKE} psql-destroy
-	rm -f out/*.x
+	${MAKE} rmq-destroy
+
 
 psql-provdb:
 	${MAKE} psql-provdb-createdb
@@ -121,3 +124,4 @@ print-targets:
 	@make -qp | awk -F':' '/^[a-zA-Z0-9][^$$#\/\t=]*:([^=]|$$)/ {split($$1,A,/ /);for(i in A)print A[i]}'     |sort|uniq|grep -v all|grep -v Makefile
 
 
+include Makefile.rmq
