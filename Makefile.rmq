@@ -1,5 +1,9 @@
 
 
+rmq:
+	${MAKE} rmq-pull
+	${MAKE} rmq-init
+
 rmq-pull:
 	@if [ ! -e out/rmq-pull.x ]; then \
 		docker pull ${RABBIT_IMAGE}:${RABBIT_VERSION}; \
