@@ -17,7 +17,7 @@ rmq-pull:
 rmq-init:
 	@echo "Checking hub..."
 	@if [ ! "${RABBIT_CONTAINER_HUB_ID}" ]; then \
-		@echo "Starting hub..."; \
+		echo "Starting hub..."; \
 		docker run -d \
 			-e RABBITMQ_VHOST=addict-dev \
 			-e RABBITMQ_USER=addict \
