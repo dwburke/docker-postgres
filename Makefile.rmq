@@ -1,14 +1,14 @@
 
-RABBIT_IMAGE      ?= dwburke/centos-rabbitmq
-RABBIT_VERSION    ?= latest
-RABBIT_USER       ?= white-rabbit
-RABBIT_PASS       ?= abc123
-RABBIT_VHOST      ?= ProvisionDan
-RABBIT_HUB_NAME   ?= rabbitmq_hub
-RABBIT_SPOKE_NAME ?= rabbitmq_spoke
+#RABBIT_IMAGE      ?= dwburke/centos-rabbitmq
+#RABBIT_VERSION    ?= latest
+#RABBIT_USER       ?= white-rabbit
+#RABBIT_PASS       ?= abc123
+#RABBIT_VHOST      ?= ProvisionDan
+#RABBIT_HUB_NAME   ?= rabbitmq_hub
+#RABBIT_SPOKE_NAME ?= rabbitmq_spoke
 
-RABBIT_CONTAINER_HUB_ID=$(shell docker ps -a | grep rabbitmq_hub | cut -d ' ' -f 1)
-RABBIT_CONTAINER_SPOKE_ID=$(shell docker ps -a | grep rabbitmq_spoke | cut -d ' ' -f 1)
+#RABBIT_CONTAINER_HUB_ID=$(shell docker ps -a | grep rabbitmq_hub | cut -d ' ' -f 1)
+#RABBIT_CONTAINER_SPOKE_ID=$(shell docker ps -a | grep rabbitmq_spoke | cut -d ' ' -f 1)
 
 
 rmq-pull:
