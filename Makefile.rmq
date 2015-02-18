@@ -43,6 +43,9 @@ rmq-init:
 
 
 rmq-destroy:
-	${MAKE} rmq-destroy
+	docker stop ${RABBIT_HUB_NAME}
+	docker rm ${RABBIT_HUB_NAME}
+	docker stop ${RABBIT_SPOKE_NAME}
+	docker rm ${RABBIT_SPOKE_NAME}
 	rm -f out/rmq-*.x
 
