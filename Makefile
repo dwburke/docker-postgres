@@ -16,13 +16,21 @@ default:
 
 
 psql-init:
+	@echo "Checking postgres..."
 	@if [ ! "${POSTGRES_CONTAINER_ID}" ]; then \
+		echo "Starting postgres..."; \
 		docker run -d \
 			--name ${PSQL_SERVER_CONTAINER_NAME} \
 			-e POSTGRES_PASSWORD=${POSTGRES_PASS} \
 			postgres:${POSTGRES_VERSION}; \
 		sleep 7; \
 	fi
+
+
+psql-clean:
+	${MAKE} psql-destroy
+	rm -f out/psql-*.x
+
 
 clean:
 	${MAKE} psql-destroy
@@ -48,26 +56,42 @@ psql-provdb-import-schema:
 
 psql-provdb-createdb:
 	@echo create prov user and prov db
-	@docker run -t -i \
-		--rm \
-		-v ${HOME}/lw:/usr/local/lp/git/lw \
-		--link ${PSQL_SERVER_CONTAINER_NAME}:PSQL \
-		-e PGPASSWORD=${POSTGRES_PASS} \
-		${PSQL_USER_OPTS} ${POSTGRES_IMAGE}:${POSTGRES_VERSION} \
-		sh -c 'exec psql -h "$$PSQL_PORT_5432_TCP_ADDR" -p "$$PSQL_PORT_5432_TCP_PORT" -U $(POSTGRES_USER) < /usr/local/lp/git/lw/sql/provision/database.sql'
+	@if [ ! -e out/psql-provdb-createdb.x ]; then \
+		docker run -t -i \
+			--rm \
+			-v ${HOME}/lw:/usr/local/lp/git/lw \
+			--link ${PSQL_SERVER_CONTAINER_NAME}:PSQL \
+			-e PGPASSWORD=${POSTGRES_PASS} \
+			${PSQL_USER_OPTS} ${POSTGRES_IMAGE}:${POSTGRES_VERSION} \
+			sh -c 'exec psql -h "$$PSQL_PORT_5432_TCP_ADDR" -p "$$PSQL_PORT_5432_TCP_PORT" -U $(POSTGRES_USER) < /usr/local/lp/git/lw/sql/provision/database.sql'; \
+		touch out/psql-provdb-createdb.x; \
+	fi
 
 psql-provdb-set-password:
-	@echo set password
-	@echo " alter user prov with password '$(POSTGRES_PASS)';" > user.sql
+	@if [ ! -e out/psql-provdb-set-password.x ]; then \
+		echo "set password"; \
+		echo " alter user prov with password '$(POSTGRES_PASS)';" > user.sql; \
+		docker run -t -i \
+			--rm \
+			-v ${HOME}/lw:/usr/local/lp/git/lw \
+			--link ${PSQL_SERVER_CONTAINER_NAME}:PSQL \
+			-v $(shell pwd):/usr/local/lp/tmp \
+			-e PGPASSWORD=${POSTGRES_PASS} \
+			${PSQL_USER_OPTS} ${POSTGRES_IMAGE}:${POSTGRES_VERSION} \
+			sh -c 'psql -h "$$PSQL_PORT_5432_TCP_ADDR" -p "$$PSQL_PORT_5432_TCP_PORT" -U $(POSTGRES_USER) < /usr/local/lp/tmp/user.sql'; \
+		rm -f user.sql; \
+		touch out/psql-provdb-set-password.x; \
+	fi
+
+psql-provdb-client:
 	@docker run -t -i \
 		--rm \
 		-v ${HOME}/lw:/usr/local/lp/git/lw \
 		--link ${PSQL_SERVER_CONTAINER_NAME}:PSQL \
-		-v $(shell pwd):/usr/local/lp/tmp \
 		-e PGPASSWORD=${POSTGRES_PASS} \
 		${PSQL_USER_OPTS} ${POSTGRES_IMAGE}:${POSTGRES_VERSION} \
-		sh -c 'psql -h "$$PSQL_PORT_5432_TCP_ADDR" -p "$$PSQL_PORT_5432_TCP_PORT" -U $(POSTGRES_USER) < /usr/local/lp/tmp/user.sql'
-	@rm -f user.sql
+		sh -c 'exec psql -h "$$PSQL_PORT_5432_TCP_ADDR" -p "$$PSQL_PORT_5432_TCP_PORT" -U prov provision'
+
 
 psql-client:
 	@docker run -t -i \
