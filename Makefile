@@ -35,12 +35,6 @@ psql-init:
 		sleep 7; \
 	fi
 
-
-psql-clean:
-	${MAKE} psql-destroy
-	rm -f out/psql-*.x
-
-
 clean:
 	${MAKE} psql-destroy
 	${MAKE} rmq-destroy
@@ -113,8 +107,11 @@ psql-client:
 		sh -c 'exec psql -h "$$PSQL_PORT_5432_TCP_ADDR" -p "$$PSQL_PORT_5432_TCP_PORT" -U postgres'
 
 psql-destroy:
-	docker stop ${PSQL_SERVER_CONTAINER_NAME}
-	docker rm ${PSQL_SERVER_CONTAINER_NAME}
+	@if [ "${POSTGRES_CONTAINER_ID}" ]; then \
+		docker stop ${PSQL_SERVER_CONTAINER_NAME}; \
+		docker rm ${PSQL_SERVER_CONTAINER_NAME}; \
+	fi
+	@rm -fv out/psql-*.x
 
 
 psql-print-env:
