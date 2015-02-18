@@ -35,13 +35,16 @@ psql-provdb:
 
 psql-provdb-import-schema:
 	@echo import schema
-	@docker run -t -i \
-		--rm \
-		-v ${HOME}/lw:/usr/local/lp/git/lw \
-		--link ${PSQL_SERVER_CONTAINER_NAME}:PSQL \
-		-e PGPASSWORD=${POSTGRES_PASS} \
-		${PSQL_USER_OPTS} ${POSTGRES_IMAGE}:${POSTGRES_VERSION} \
-		sh -c 'exec psql -h "$$PSQL_PORT_5432_TCP_ADDR" -p "$$PSQL_PORT_5432_TCP_PORT" -U $(POSTGRES_USER) < /usr/local/lp/git/lw/sql/provision/schema.sql'
+	@if [ ! -e out/psql-provdb-import-schema.x ]; then \
+		docker run -t -i \
+			--rm \
+			-v ${HOME}/lw:/usr/local/lp/git/lw \
+			--link ${PSQL_SERVER_CONTAINER_NAME}:PSQL \
+			-e PGPASSWORD=${POSTGRES_PASS} \
+			${PSQL_USER_OPTS} ${POSTGRES_IMAGE}:${POSTGRES_VERSION} \
+			sh -c 'exec psql -h "$$PSQL_PORT_5432_TCP_ADDR" -p "$$PSQL_PORT_5432_TCP_PORT" -U $(POSTGRES_USER) < /usr/local/lp/git/lw/sql/provision/schema.sql'; \
+		touch out/psql-provdb-import-schema.x; \
+	fi
 
 psql-provdb-createdb:
 	@echo create prov user and prov db
