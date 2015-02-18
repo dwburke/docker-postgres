@@ -31,7 +31,7 @@ psql-init:
 		docker run -d \
 			--name ${PSQL_SERVER_CONTAINER_NAME} \
 			-e POSTGRES_PASSWORD=${POSTGRES_PASS} \
-			postgres:${POSTGRES_VERSION}; \
+			${POSTGRES_IMAGE}:${POSTGRES_VERSION}; \
 		sleep 7; \
 	fi
 
