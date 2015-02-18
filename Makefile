@@ -24,6 +24,9 @@ psql-init:
 		sleep 7; \
 	fi
 
+clean:
+	${MAKE} psql-destroy
+	rm -f out/*.x
 
 psql-provdb:
 	${MAKE} psql-provdb-createdb
