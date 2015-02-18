@@ -12,10 +12,17 @@ POSTGRES_CONTAINER_ID=$(shell docker ps -a | grep ${PSQL_SERVER_CONTAINER_NAME} 
 all: default
 
 default:
+	${MAKE} pull
 	${MAKE} psql-init
 	${MAKE} rmq-init
 	${MAKE} psql-provdb
 
+pull:
+	${MAKE} psql-pull
+	${MAKE} rmq-pull
+
+psql-pull:
+	docker pull ${POSTGRES_IMAGE}:${POSTGRES_VERSION}
 
 psql-init:
 	@echo "Checking postgres..."
