@@ -12,7 +12,10 @@
 
 
 rmq-pull:
-	docker pull ${RABBIT_IMAGE}:${RABBIT_VERSION}
+	@if [ ! -e out/rmq-pull.x ]; then \
+		docker pull ${RABBIT_IMAGE}:${RABBIT_VERSION}; \
+		touch out/rmq-pull.x; \
+	fi
 
 rmq-init:
 	@echo "Checking hub..."

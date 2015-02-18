@@ -10,7 +10,10 @@
 
 
 psql-pull:
-	docker pull ${POSTGRES_IMAGE}:${POSTGRES_VERSION}
+	@if [ ! -e out/psql-pull.x ]; then \
+		docker pull ${POSTGRES_IMAGE}:${POSTGRES_VERSION}; \
+		touch out/psql-pull.x; \
+	fi
 
 psql-init:
 	@echo "Checking postgres..."
