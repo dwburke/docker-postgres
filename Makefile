@@ -15,8 +15,8 @@ pull:
 	${MAKE} rmq-pull
 
 clean:
-	${MAKE} psql-destroy
-	${MAKE} rmq-destroy
+	${MAKE} psql-clean
+	${MAKE} rmq-clean
 
 
 print-targets:

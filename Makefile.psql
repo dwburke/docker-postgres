@@ -84,7 +84,7 @@ psql-client:
 		${PSQL_USER_OPTS} ${POSTGRES_IMAGE}:${POSTGRES_VERSION} \
 		sh -c 'exec psql -h "$$PSQL_PORT_5432_TCP_ADDR" -p "$$PSQL_PORT_5432_TCP_PORT" -U postgres'
 
-psql-destroy:
+psql-clean:
 	@if [ "${POSTGRES_CONTAINER_ID}" ]; then \
 		docker stop ${PSQL_SERVER_CONTAINER_NAME}; \
 		docker rm ${PSQL_SERVER_CONTAINER_NAME}; \

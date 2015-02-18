@@ -37,7 +37,7 @@ rmq-init:
 	fi
 
 
-rmq-destroy:
+rmq-clean:
 	@if [ "${RABBIT_CONTAINER_HUB_ID}" ]; then \
 		docker stop ${RABBIT_HUB_NAME}; \
 		docker rm ${RABBIT_HUB_NAME}; \
