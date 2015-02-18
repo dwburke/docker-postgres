@@ -77,7 +77,7 @@ psql-provdb-client:
 		--link ${PSQL_SERVER_CONTAINER_NAME}:PSQL \
 		-e PGPASSWORD=${POSTGRES_PASS} \
 		${PSQL_USER_OPTS} ${POSTGRES_IMAGE}:${POSTGRES_VERSION} \
-		sh -c 'exec psql -h "$$PSQL_PORT_5432_TCP_ADDR" -p "$$PSQL_PORT_5432_TCP_PORT" -U prov provision'
+		sh -c 'exec psql -h "$$PSQL_PORT_5432_TCP_ADDR" -p "$$PSQL_PORT_5432_TCP_PORT" -U postgres provision'
 
 
 psql-client:
