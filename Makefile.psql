@@ -37,7 +37,7 @@ psql-provdb-import-schema:
 			--link ${PSQL_SERVER_CONTAINER_NAME}:PSQL \
 			-e PGPASSWORD=${POSTGRES_PASS} \
 			${PSQL_USER_OPTS} ${POSTGRES_IMAGE}:${POSTGRES_VERSION} \
-			sh -c 'exec psql -h "$$PSQL_PORT_5432_TCP_ADDR" -p "$$PSQL_PORT_5432_TCP_PORT" -U $(POSTGRES_USER) < /usr/local/lp/git/lw/sql/provision/schema.sql'; \
+			sh -c 'exec psql -h "$$PSQL_PORT_5432_TCP_ADDR" -p "$$PSQL_PORT_5432_TCP_PORT" -U $(POSTGRES_USER) provision < /usr/local/lp/git/lw/sql/provision/schema.sql'; \
 		touch out/psql-provdb-import-schema.x; \
 	fi
 
