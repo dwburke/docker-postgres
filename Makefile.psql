@@ -1,5 +1,10 @@
 
 
+psql:
+	${MAKE} psql-pull
+	${MAKE} psql-init
+	${MAKE} psql-provdb
+
 
 psql-pull:
 	@if [ ! -e out/psql-pull.x ]; then \
