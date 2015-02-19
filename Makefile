@@ -8,6 +8,7 @@ default:
 	${MAKE} pull
 	${MAKE} psql-init
 	${MAKE} rmq-init
+	${MAKE} info
 	${MAKE} psql-provdb
 
 pull:
