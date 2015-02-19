@@ -11,6 +11,7 @@ default:
 	${MAKE} info
 	${MAKE} psql-provdb
 	${MAKE} p-server
+	${MAKE} info
 
 pull:
 	${MAKE} psql-pull
