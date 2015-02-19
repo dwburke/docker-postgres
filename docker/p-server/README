@@ -1,0 +1,24 @@
+
+
+To build container:
+
+	make
+
+This will automatically pull down the centos:7 container, 
+and install all of the things.
+
+lw-plack-app-provision-server is cloned into /usr/local/lp/git
+
+
+To start the container, execute run.sh in this directory.
+It exports port 5000, mapped to port 5000 of the host.
+
+
+The main "lw" repo is mounted into the container from your home
+directory into /usr/local/lp/git/lw: i.e. $HOME/lw
+
+Also, if $HOME/lwconfigs exists, that is mounted as /usr/local/lp/configs,
+otherwise it will mount /usr/local/lp/configs of the parent host.
+
+
+

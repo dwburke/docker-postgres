@@ -1,0 +1,15 @@
+[stable-generic]
+name= Stable Generic Packages
+baseurl=http://10.30.152.9/stable/generic/
+gpgcheck=1
+
+[stable-arch]
+name= Stable Arch Specific Packages
+baseurl=http://10.30.152.9/stable/centos/$releasever/$basearch/
+gpgcheck=1
+
+[stable-noarch]
+name= Stable Arch Specific Packages
+baseurl=http://10.30.152.9/stable/centos/$releasever/noarch/
+gpgcheck=1
+

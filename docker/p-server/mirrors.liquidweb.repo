@@ -1,0 +1,19 @@
+
+[system-base]
+name=CentOS-$releasever - $basearch - Base
+baseurl=http://mirrors.liquidweb.com/CentOS/$releasever/os/$basearch/
+gpgcheck=1
+enabled=1
+
+[system-updates]
+name=CentOS-$releasever - $basearch - Released Updates
+baseurl=http://mirrors.liquidweb.com/CentOS/$releasever/updates/$basearch/
+gpgcheck=1
+enabled=1
+
+[system-extras]
+name=CentOS-$releasever - $basearch - Extras
+baseurl=http://mirrors.liquidweb.com/CentOS/$releasever/extras/$basearch/
+gpgcheck=1
+enabled=1
+
