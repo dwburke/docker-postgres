@@ -6,7 +6,7 @@ all: default
 
 default:
 	${MAKE} build
-
+	${MAKE} run
 
 build:
 	docker build --tag="liquidweb/plack-pserver" .
