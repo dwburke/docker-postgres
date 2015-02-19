@@ -18,6 +18,7 @@ run:
 	@if [ ! "${PSERVER_CONTAINER_ID}" ]; then \
 		docker run -d \
 			--name=p-server \
+			--link memcached:memcached \
 			-p 5000:5000 \
 			-v ${HOME}/lwconfigs:/usr/local/lp/configs \
 			-v ${HOME}/lw:/usr/local/lp/git/lw \

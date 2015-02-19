@@ -1,0 +1,33 @@
+
+
+memd:
+	${MAKE} memd-pull
+	${MAKE} memd-init
+
+memd-pull:
+	@if [ ! -e out/memd-pull.x ]; then \
+		docker pull ${MEMCACHED_IMAGE}:${MEMCACHED_VERSION}; \
+		touch out/memd-pull.x; \
+	fi
+
+memd-info:
+	@echo "memcached:"`docker inspect --format '{{ .NetworkSettings.IPAddress }}' memcached 2>/dev/null` >> ips.txt
+
+memd-init:
+	@echo "Checking memcached..."
+	@if [ ! "${MEMCACHED_CONTAINER_ID}" ]; then \
+		echo "Starting memcached..."; \
+		docker run -d \
+			--name=memcached \
+			${MEMCACHED_IMAGE}:${MEMCACHED_VERSION}; \
+		sleep 3; \
+	fi
+
+
+memd-clean:
+	@if [ "${MEMCACHED_CONTAINER_ID}" ]; then \
+		docker stop memcached; \
+		docker rm memcached; \
+	fi
+	@rm -fv out/memd-*.x
+

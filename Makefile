@@ -6,21 +6,24 @@ all: default
 
 default:
 	${MAKE} pull
-	${MAKE} psql-init
+	${MAKE} memd-init
 	${MAKE} rmq-init
+	${MAKE} psql-init
 	${MAKE} info
 	${MAKE} psql-provdb
 	${MAKE} p-server
 	${MAKE} info
 
 pull:
+	${MAKE} memd-pull
 	${MAKE} psql-pull
 	${MAKE} rmq-pull
 
 clean:
-	${MAKE} psql-clean
-	${MAKE} rmq-clean
 	${MAKE} -C docker/p-server clean
+	${MAKE} rmq-clean
+	${MAKE} psql-clean
+	${MAKE} memd-clean
 
 full-clean:
 	${MAKE} clean
@@ -28,6 +31,7 @@ full-clean:
 
 info:
 	@echo > ips.txt
+	${MAKE} memd-info
 	${MAKE} psql-info
 	${MAKE} rmq-info
 	${MAKE} -C docker/p-server info
@@ -43,4 +47,5 @@ print-targets:
 include Makefile.rmq
 include Makefile.psql
 include Makefile.prov
+include Makefile.memcached
 
