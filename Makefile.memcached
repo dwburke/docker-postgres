@@ -18,6 +18,7 @@ memd-init:
 	@if [ ! "${MEMCACHED_CONTAINER_ID}" ]; then \
 		echo "Starting memcached..."; \
 		docker run -d \
+			-p 11211:11211 \
 			--name=memcached \
 			${MEMCACHED_IMAGE}:${MEMCACHED_VERSION}; \
 		sleep 3; \
