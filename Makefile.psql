@@ -12,6 +12,10 @@ psql-pull:
 		touch out/psql-pull.x; \
 	fi
 
+psql-info:
+	@echo "postgres:"`docker inspect --format '{{ .NetworkSettings.IPAddress }}' ${PSQL_SERVER_CONTAINER_NAME} 2>/dev/null` >> ips.txt
+
+
 psql-init:
 	@echo "Checking postgres..."
 	@if [ ! "${POSTGRES_CONTAINER_ID}" ]; then \

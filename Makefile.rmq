@@ -10,6 +10,10 @@ rmq-pull:
 		touch out/rmq-pull.x; \
 	fi
 
+rmq-info:
+	@echo "rmq-hub:"`docker inspect --format '{{ .NetworkSettings.IPAddress }}' ${RABBIT_HUB_NAME} 2>/dev/null` >> ips.txt
+	@echo "rmq-spoke:"`docker inspect --format '{{ .NetworkSettings.IPAddress }}' ${RABBIT_SPOKE_NAME} 2>/dev/null` >> ips.txt
+
 rmq-init:
 	@echo "Checking hub..."
 	@if [ ! "${RABBIT_CONTAINER_HUB_ID}" ]; then \

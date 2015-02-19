@@ -18,6 +18,11 @@ clean:
 	${MAKE} psql-clean
 	${MAKE} rmq-clean
 
+info:
+	@echo > ips.txt
+	${MAKE} psql-info
+	${MAKE} rmq-info
+	@cat ips.txt
 
 print-targets:
 	@make -qp | awk -F':' '/^[a-zA-Z0-9][^$$#\/\t=]*:([^=]|$$)/ {split($$1,A,/ /);for(i in A)print A[i]}'     |sort|uniq|grep -v all|grep -v Makefile
