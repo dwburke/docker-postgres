@@ -1,0 +1,12 @@
+
+
+prov:
+	${MAKE} p-server-init
+
+p-server-init:
+	${MAKE} -C docker/p-server build
+	${MAKE} -C docker/p-server run
+
+p-server-delete:
+	${MAKE} -C docker/p-server delete
+

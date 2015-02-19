@@ -25,10 +25,14 @@ info:
 	${MAKE} rmq-info
 	@cat ips.txt
 
+p-server:
+	${MAKE} -C docker/p-server
+
 print-targets:
 	@make -qp | awk -F':' '/^[a-zA-Z0-9][^$$#\/\t=]*:([^=]|$$)/ {split($$1,A,/ /);for(i in A)print A[i]}'     |sort|uniq|grep -v all|grep -v Makefile
 
 
 include Makefile.rmq
 include Makefile.psql
+include Makefile.prov
 
