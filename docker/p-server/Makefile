@@ -9,7 +9,9 @@ default:
 	${MAKE} run
 
 build:
-	@docker build --tag="liquidweb/plack-pserver" .
+	@if [ ! "${PSERVER_CONTAINER_ID}" ]; then \
+		docker build --tag="liquidweb/plack-pserver" .; \
+	fi
 
 info:
 	@echo "p-server:"`docker inspect --format '{{ .NetworkSettings.IPAddress }}' p-server 2>/dev/null` >> ips.txt
