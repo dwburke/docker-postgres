@@ -10,6 +10,7 @@ default:
 	${MAKE} rmq-init
 	${MAKE} info
 	${MAKE} psql-provdb
+	${MAKE} p-server
 
 pull:
 	${MAKE} psql-pull
@@ -18,11 +19,17 @@ pull:
 clean:
 	${MAKE} psql-clean
 	${MAKE} rmq-clean
+	${MAKE} -C docker/p-server clean
+
+full-clean:
+	${MAKE} clean
+	${MAKE} -C docker/p-server delete
 
 info:
 	@echo > ips.txt
 	${MAKE} psql-info
 	${MAKE} rmq-info
+	${MAKE} -C docker/p-server info
 	@cat ips.txt
 
 p-server:

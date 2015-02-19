@@ -11,6 +11,9 @@ default:
 build:
 	docker build --tag="liquidweb/plack-pserver" .
 
+info:
+	@echo "p-server:"`docker inspect --format '{{ .NetworkSettings.IPAddress }}' p-server 2>/dev/null` >> ips.txt
+
 run:
 	docker run -d \
 		--name=p-server \
